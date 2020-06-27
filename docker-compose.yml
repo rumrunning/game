@@ -1,0 +1,54 @@
+version: "3.7"
+
+services:
+  app:
+    image: rumrunnning/app:latest
+    build:
+      context: .
+      args:
+        - COMPOSER_TOKEN=${COMPOSER_TOKEN}
+    volumes:
+      - .:/app:cached
+      - app-storage:/var/www/html/storage
+    networks:
+      - app
+    depends_on:
+      - db
+
+  http:
+    image: rumrunnning/http:latest
+    build:
+      context: ./docker/nginx
+    volumes:
+      - ./:/app:ro
+    networks:
+      - app
+    ports:
+      - 8080:8080
+    depends_on:
+      - app
+
+  db:
+    image: mariadb:10.4
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    ports:
+      - 3306:3306
+    networks:
+      - app
+
+networks:
+  app:
+
+volumes:
+  app-storage:
+    driver: local
+
+  db-data:
+    driver: local
