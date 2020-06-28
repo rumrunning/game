@@ -1,3 +1,9 @@
+FROM rumrunnning/node:latest AS asset_builder
+
+COPY . /app
+
+RUN npm install && npm run prod
+
 FROM bitnami/php-fpm:7.4
 
 RUN set -eux; \
@@ -12,6 +18,8 @@ RUN set -eux; \
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 COPY . /app
+
+COPY --from=asset_builder /app/public /app/public
 
 WORKDIR /app
 

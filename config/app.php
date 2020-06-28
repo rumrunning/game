@@ -175,6 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        \App\Game\ServiceProvider::class,
+        \App\RumRunning\ServiceProvider::class,
+
     ],
 
     /*

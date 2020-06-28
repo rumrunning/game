@@ -2,7 +2,9 @@
 
 namespace App\Game;
 
-class Dice {
+use App\Game\Contracts\DiceContract;
+
+class Dice implements DiceContract {
 
     public function roll($min = 1, $max = 100)
     {

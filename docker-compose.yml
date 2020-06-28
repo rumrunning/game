@@ -43,6 +43,14 @@ services:
     networks:
       - app
 
+  node:
+    image: rumrunnning/node:latest
+    build:
+      context: ./docker/node
+    volumes:
+      - ./:/app
+    entrypoint: "/entrypoints/entrypoint-watch"
+
 networks:
   app:
 
