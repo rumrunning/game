@@ -2,6 +2,7 @@
 
 namespace App\RumRunning;
 
+use App\Game\Contracts\DiceContract;
 use App\Game\Game as BaseGame;
 use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\PlayerContract;
@@ -16,35 +17,31 @@ class Game extends BaseGame {
 
     /**
      * Game constructor.
-     * @param $name
-     * @param $crimes
+     * @param string $name
+     * @param DiceContract $dice
+     * @param array $chanceCalculators
+     * @param CrimesCollection $crimes
      */
-    public function __construct($name, CrimesCollection $crimes)
+    public function __construct(string $name,
+                                DiceContract $dice,
+                                array $chanceCalculators,
+                                CrimesCollection $crimes)
     {
-        $this->name = $name;
+        parent::__construct($name, $dice, $chanceCalculators);
 
         $this->crimes = $crimes;
     }
 
     /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
      * @return CrimesCollection
      */
-    public function getCrimes(): CrimesCollection
+    public function crimes(): CrimesCollection
     {
         return $this->crimes;
     }
 
-    public function commitCrime(PlayerContract $player, Crime $crime)
+    public function attemptCrime(PlayerContract $player, Crime $crime)
     {
-        $outcome = $this->skilledAttemptBy($player, $crime)->attempt();
-        $outcome->claim();
+        return $this->skilledAttemptBy($player, $crime)->attempt();
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\RumRunning\Rewards;
 
-use App\Game\Reward;
-
 class Money extends RangeReward {
 
     private $amount = 0;

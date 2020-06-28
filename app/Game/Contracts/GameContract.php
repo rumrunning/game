@@ -2,10 +2,11 @@
 
 namespace App\Game\Contracts;
 
-
 interface GameContract {
 
-    public function getName();
+    public function name();
 
     public function dice();
+
+    public function defaultChanceCalculator(PlayerContract $player) : ChanceCalculatorContract;
 }

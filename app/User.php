@@ -2,9 +2,13 @@
 
 namespace App;
 
+use App\Game\Claim;
+use App\Game\ClaimCollection;
+use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\PlayerContract;
 use App\Game\Traits\InteractsWithGame;
 use App\RumRunning\Crimes\Crime;
+use App\RumRunning\Rewards\Skill;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -43,15 +47,40 @@ class User extends Authenticatable implements PlayerContract
 
     public function attemptCrime(Crime $crime)
     {
-        return $this->game()->commitCrime($this, $crime);
+        return $this->game()->attemptCrime($this, $crime);
     }
 
-    public function getSkill($kind)
+    public function skillSets()
     {
-        if ($kind === Crime::class) {
-            return 0.9;
-        }
+        return $this->hasMany(SkillSet::class);
+    }
 
-        return 0;
+    public function getSkillSet($class) : SkillSet
+    {
+        return $this->skillSets()->getSkillSet($class)->first();
+    }
+
+    public function getSkillSetPoints($class)
+    {
+        return $this->getSkillSet($class)->points;
+    }
+
+
+    public function collectClaimsFor(ActionContract $action, ClaimCollection $claims)
+    {
+        $claims->each(function ($claim) use ($action) {
+            $this->collectClaimFor($action, $claim);
+        });
+    }
+
+    private function collectClaimFor(ActionContract $action, Claim $claim)
+    {
+        switch (get_class($claim->getCollectable())) {
+            case Skill::class:
+                $skillPoints = $claim->getValue();
+
+                $this->getSkillSet(get_class($action))->increasePoints($skillPoints);
+                break;
+        }
     }
 }

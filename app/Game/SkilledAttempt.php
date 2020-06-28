@@ -3,6 +3,7 @@
 namespace App\Game;
 
 use App\Game\Contracts\ActionContract;
+use App\Game\Contracts\ChanceCalculatorContract;
 use App\Game\Contracts\GameContract;
 use App\Game\Contracts\PlayerContract;
 
@@ -30,9 +31,9 @@ class SkilledAttempt {
     public function attempt()
     {
         $result = $this->game->dice()->roll();
-        $chance = $this->getPercentageChance();
+        $chance = $this->calculator()->getActionPercentage($this->action);
 
-        $outcome = new AttemptedOutcome();
+        $outcome = new Outcome($this->game);
 
         if ($result <= $chance) {
             $outcome->setRewards($this->action->getRewards());
@@ -45,16 +46,8 @@ class SkilledAttempt {
         return $outcome;
     }
 
-    // @todo consider moving this to a calculator class
-    public function getPercentageChance()
+    private function calculator() : ChanceCalculatorContract
     {
-        $skill = $this->player->getSkill(get_class($this->action));
-        $actionChance = 1 - $this->action->getDifficulty();
-
-        // @todo consider making this variable
-        // $actionChance - random_int(0, $this->action->getDifficulty() * 100);
-
-        // @todo round to 100
-        return $skill * $actionChance * 100;
+        return $this->game->defaultChanceCalculator($this->player);
     }
 }

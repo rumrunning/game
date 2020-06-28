@@ -2,8 +2,9 @@
 
 namespace App\Game;
 
-abstract class Reward {
+use App\Game\Contracts\CollectableContract;
 
-    abstract public function collect();
+abstract class Reward implements CollectableContract {
+
 
 }
