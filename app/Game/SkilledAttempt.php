@@ -28,7 +28,7 @@ class SkilledAttempt {
         $this->action = $action;
     }
 
-    public function attempt()
+    public function attempt() : Outcome
     {
         $result = $this->game->dice()->roll();
         $chance = $this->calculator()->getActionPercentage($this->action);

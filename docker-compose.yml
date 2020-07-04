@@ -1,5 +1,15 @@
 version: "3.7"
 
+networks:
+  app:
+
+volumes:
+  app-storage:
+    driver: local
+
+  db-data:
+    driver: local
+
 services:
   app:
     image: rumrunnning/app:latest
@@ -14,6 +24,7 @@ services:
       - app
     depends_on:
       - db
+      - node
 
   http:
     image: rumrunnning/http:latest
@@ -50,13 +61,3 @@ services:
     volumes:
       - ./:/app
     entrypoint: "/entrypoints/entrypoint-watch"
-
-networks:
-  app:
-
-volumes:
-  app-storage:
-    driver: local
-
-  db-data:
-    driver: local

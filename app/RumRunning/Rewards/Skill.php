@@ -2,7 +2,7 @@
 
 namespace App\RumRunning\Rewards;
 
-class Skill extends RangeReward {
+class Skill extends RangedReward {
 
     private $total = 0;
 

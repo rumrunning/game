@@ -4,7 +4,7 @@ namespace App\RumRunning\Rewards;
 
 use App\Game\Reward;
 
-abstract class RangeReward extends Reward {
+abstract class RangedReward extends Reward {
 
     private $maxValue;
 

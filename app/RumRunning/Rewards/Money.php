@@ -2,7 +2,7 @@
 
 namespace App\RumRunning\Rewards;
 
-class Money extends RangeReward {
+class Money extends RangedReward {
 
     private $amount = 0;
 
