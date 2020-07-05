@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Game;
+namespace App\Game\ChanceCalculators;
 
 use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\ChanceCalculatorContract;

@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\Unit\Game;
+namespace Tests\Unit\Game\ChanceCalculators;
 
+use App\Game\ChanceCalculators\PlayerSkillSetChanceCalculator;
 use App\Game\Claim;
 use App\Game\ClaimCollection;
 use App\RumRunning\Crimes\CrimeFactory;
@@ -10,7 +11,6 @@ use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Game\PlayerSkillSetChanceCalculator;
 
 class PlayerSkillSetChanceCalculatorTest extends TestCase {
 
@@ -55,7 +55,7 @@ class PlayerSkillSetChanceCalculatorTest extends TestCase {
     {
         $this->seed();
 
-        $player = $this->player();
+        $player = factory(User::class)->make();
 
         $calc = new PlayerSkillSetChanceCalculator($player);
 

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\RumRunning;
 
+use App\Game\ChanceCalculators\PlayerSkillSetChanceCalculator;
 use App\Game\Dice;
 use App\Game\Outcome;
 use App\RumRunning\Crimes\CrimeFactory;
@@ -28,7 +29,7 @@ class GameTest extends TestCase {
 
     private function chanceCalculators()
     {
-        return ['default' => \App\Game\PlayerSkillSetChanceCalculator::class];
+        return ['default' => PlayerSkillSetChanceCalculator::class];
     }
 
     private function crimes()

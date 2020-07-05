@@ -35,6 +35,6 @@ return [
     ],
 
     'chance_calculators' => [
-        'default' => \App\Game\PlayerSkillSetChanceCalculator::class
+        'default' => \App\Game\ChanceCalculators\PlayerSkillSetChanceCalculator::class
     ]
 ];

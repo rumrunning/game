@@ -4,7 +4,6 @@ namespace App\RumRunning;
 
 use App\Game\Contracts\DiceContract;
 use App\Game\Game as BaseGame;
-use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\PlayerContract;
 use App\RumRunning\Crimes\Crime;
 use App\RumRunning\Crimes\CrimesCollection;
