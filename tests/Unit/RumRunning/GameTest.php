@@ -3,11 +3,18 @@
 namespace Tests\Unit\RumRunning;
 
 use App\Game\Dice;
+use App\Game\Outcome;
+use App\RumRunning\Crimes\CrimeFactory;
 use App\RumRunning\Crimes\CrimesCollection;
 use App\RumRunning\Game;
+use App\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class GameTest extends TestCase {
+
+    use DatabaseMigrations, RefreshDatabase;
 
     private function name()
     {
@@ -26,7 +33,7 @@ class GameTest extends TestCase {
 
     private function crimes()
     {
-        [
+        return [
             [
                 'code' => 'pickpocket',
                 'description' => 'Pick-pocket someone',
@@ -90,6 +97,18 @@ class GameTest extends TestCase {
 
     public function testAttemptCrime()
     {
+        $this->seed();
 
+        $crimeCollection = CrimeFactory::createFromArray($this->crimes());
+        $player = User::first();
+
+        $game = new Game(
+            $this->name(),
+            $this->dice(),
+            $this->chanceCalculators(),
+            $crimeCollection
+        );
+
+        $this->assertInstanceOf(Outcome::class, $game->attemptCrime($player, $crimeCollection->first()));
     }
 }

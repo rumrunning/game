@@ -28,10 +28,9 @@ class PlayerSkillSetChanceCalculator implements ChanceCalculatorContract {
         $percentage = $skill * $actionChance * 100;
 
         // round down to 100%
+        // @todo Work out how to set a value between 9X% & 100%, without the odds changing on page refresh
         if ($percentage > 100) {
             $percentage = 100;
-            // @todo consider making this variable
-            // $percentage = 100 - random_int(0, $action->getDifficulty() * 100);
         }
 
         return $percentage;

@@ -8,6 +8,7 @@ use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\PlayerContract;
 use App\Game\Traits\InteractsWithGame;
 use App\RumRunning\Crimes\Crime;
+use App\RumRunning\Rewards\Money;
 use App\RumRunning\Rewards\Skill;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -43,6 +44,7 @@ class User extends Authenticatable implements PlayerContract
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'monies' => 'integer',
     ];
 
     public function attemptCrime(Crime $crime)
@@ -79,8 +81,23 @@ class User extends Authenticatable implements PlayerContract
             case Skill::class:
                 $skillPoints = $claim->getValue();
 
-                $this->getSkillSet(get_class($action))->increasePoints($skillPoints);
+                $this->collectSkillPointsFor($action, $skillPoints);
+                break;
+            case Money::class:
+                $monies = $claim->getValue();
+
+                $this->collectMoniesFor($action, $monies);
                 break;
         }
+    }
+
+    private function collectSkillPointsFor(ActionContract $action, $points)
+    {
+        $this->getSkillSet(get_class($action))->increasePoints($points);
+    }
+
+    private function collectMoniesFor(ActionContract $action, $monies)
+    {
+        $this->increment('monies', $monies);
     }
 }
