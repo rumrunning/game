@@ -57,13 +57,14 @@ class Outcome {
             $claimCollection->push(...$this->punishments);
         }
 
-        $collectableClaims = $claimCollection->filter(function ($claim) {
-            $result = $claim['chance'] * 100;
+        $collectableClaims = $claimCollection->filter(function ($collectable) {
+            // @todo consider moving this in to the collectable class, or a new class entirely
+            $result = $collectable['chance'] * 100;
             $roll = $this->game->dice()->roll();
 
             return $roll <= $result;
-        })->map(function($claim) {
-            return $claim['class'];
+        })->map(function($collectable) {
+            return $collectable['class'];
         })->all();
 
         $claimCollection = (new ClaimCollection($collectableClaims))->mapInto(Claim::class);
