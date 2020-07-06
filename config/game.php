@@ -14,21 +14,16 @@ return [
             'difficulty' => 0.1,
             'outcomes' => [
                 'rewards' => [
-                    [
                         // There is a 100% chance of getting money when rewards are collected
-                        'class' => new \App\RumRunning\Rewards\Money(50, 110),
-                        'chance' => 1,
-                    ],
-                    [
-                        'class' => new \App\RumRunning\Rewards\Skill(1, 3),
-                        'chance' => 1,
-                    ],
+                    new \App\RumRunning\Rewards\Money(50, 110),
+                    new \App\RumRunning\Rewards\Skill(1, 3),
+
+                    // @todo Implement this
+                    // 10% chance of discovering them
+                    // (new \App\RumRunning\Rewards\Bullet(1, 15))->setDiscoveryChance(0.1)
                 ],
                 'punishments' => [
-                    [
-                        'class' => new \App\RumRunning\Rewards\Skill(1),
-                        'chance' => 1,
-                    ],
+                    new \App\RumRunning\Rewards\Skill(1)
                 ]
             ],
         ]

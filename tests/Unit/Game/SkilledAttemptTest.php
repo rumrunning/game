@@ -65,7 +65,7 @@ class SkilledAttemptTest extends TestCase {
         $outcome = $skilledAttempt->attempt();
 
         $this->assertInstanceOf(Outcome::class, $outcome);
-        $this->assertSame(true, $outcome->wasSuccessful());
+        $this->assertTrue($outcome->wasSuccessful());
     }
 
     public function testFailedAttempt()
@@ -85,6 +85,6 @@ class SkilledAttemptTest extends TestCase {
         $outcome = $skilledAttempt->attempt();
 
         $this->assertInstanceOf(Outcome::class, $outcome);
-        $this->assertSame(false, $outcome->wasSuccessful());
+        $this->assertNotTrue(false, $outcome->wasSuccessful());
     }
 }

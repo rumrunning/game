@@ -2,6 +2,7 @@
 
 namespace App\Game;
 
+use App\Game\Contracts\ChanceDiscoveryContract;
 use App\Game\Contracts\GameContract;
 
 class Outcome {
@@ -58,13 +59,16 @@ class Outcome {
         }
 
         $collectableClaims = $claimCollection->filter(function ($collectable) {
-            // @todo consider moving this in to the collectable class, or a new class entirely
-            $result = $collectable['chance'] * 100;
-            $roll = $this->game->dice()->roll();
+           if (! $collectable instanceof ChanceDiscoveryContract) {
+               return true;
+           }
 
-            return $roll <= $result;
+            $collectable->attemptDiscovery($this->game->dice());
+
+            return $collectable->wasDiscovered();
+
         })->map(function($collectable) {
-            return $collectable['class'];
+            return $collectable;
         })->all();
 
         $claimCollection = (new ClaimCollection($collectableClaims))->mapInto(Claim::class);

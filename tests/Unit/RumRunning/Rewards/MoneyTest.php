@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\RumRunning\Rewards;
 
+use App\Game\Contracts\DiceContract;
+use App\Game\Dice;
 use Mockery;
 use Tests\TestCase;
 use App\RumRunning\Rewards\Money;
@@ -37,4 +39,5 @@ class MoneyTest extends TestCase {
 
         $this->assertSame(10, $collected);
     }
+
 }

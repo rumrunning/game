@@ -2,7 +2,12 @@
 
 namespace App\RumRunning\Rewards;
 
-class Money extends RangedReward {
+use App\Game\Contracts\ChanceDiscoveryContract;
+use App\Game\Traits\Discoverable;
+
+class Money extends RangedReward implements ChanceDiscoveryContract {
+
+    use Discoverable;
 
     private $amount = 0;
 
