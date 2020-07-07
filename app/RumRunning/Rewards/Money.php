@@ -18,6 +18,12 @@ class Money extends RangedReward implements ChanceDiscoveryContract {
         return $this->amount;
     }
 
+    // 100% chance of being discovered - left in as an example of ChanceDiscoveryContract
+    public function getDiscoveryChance()
+    {
+        return 100;
+    }
+
     /**
      * @param int $amount
      */

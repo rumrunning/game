@@ -10,6 +10,6 @@ abstract class TestCase extends BaseTestCase
 
     protected function crimes()
     {
-        return require base_path('tests/Unit/config/crimes.php');
+        return require base_path('tests/config/crimes.php');
     }
 }

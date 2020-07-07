@@ -6,6 +6,7 @@ use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\ChanceCalculatorContract;
 use App\Game\Contracts\GameContract;
 use App\Game\Contracts\PlayerContract;
+use App\Game\Contracts\PlayerRequired;
 
 class SkilledAttempt {
 
@@ -53,17 +54,23 @@ class SkilledAttempt {
      */
     private function getChanceCalculator() : ChanceCalculatorContract
     {
-        if (is_null($this->chanceCalculator)) {
-            return $this->game->defaultChanceCalculator($this->player);
+        $chanceCalculator = $this->chanceCalculator;
+
+        if (is_null($chanceCalculator)) {
+            $chanceCalculator = $this->game->defaultChanceCalculator();
         }
 
-        return $this->chanceCalculator;
+        if ($chanceCalculator instanceof PlayerRequired) {
+            $chanceCalculator->asPlayer($this->player);
+        }
+
+        return $chanceCalculator;
     }
 
     /**
      * @param ChanceCalculatorContract $chanceCalculator
      */
-    public function setChanceCalculator(ChanceCalculatorContract $chanceCalculator): void
+    public function setChanceCalculator(ChanceCalculatorContract $chanceCalculator = null): void
     {
         $this->chanceCalculator = $chanceCalculator;
     }

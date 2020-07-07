@@ -5,6 +5,7 @@ namespace App;
 use App\Game\Claim;
 use App\Game\ClaimCollection;
 use App\Game\Contracts\ActionContract;
+use App\Game\Contracts\ChanceCalculatorContract;
 use App\Game\Contracts\PlayerContract;
 use App\Game\Traits\InteractsWithGame;
 use App\RumRunning\Crimes\Crime;
@@ -47,9 +48,9 @@ class User extends Authenticatable implements PlayerContract
         'monies' => 'integer',
     ];
 
-    public function attemptCrime(Crime $crime)
+    public function attemptCrime(Crime $crime, ChanceCalculatorContract $chanceCalculator = null)
     {
-        return $this->game()->attemptCrime($this, $crime);
+        return $this->game()->attemptCrime($this, $crime, $chanceCalculator);
     }
 
     public function skillSets()
@@ -64,6 +65,10 @@ class User extends Authenticatable implements PlayerContract
 
     public function getSkillSetPoints($class)
     {
+        if ($class instanceof ActionContract) {
+            $class = get_class($class);
+        }
+
         return $this->getSkillSet($class)->points;
     }
 

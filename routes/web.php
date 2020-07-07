@@ -20,3 +20,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::namespace('Game')->group(function() {
+    Route::get('/crimes', 'CrimeController@index');
+    Route::post('/crimes/commit', 'CrimeController@commit');
+});

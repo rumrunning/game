@@ -13,13 +13,21 @@ class ServiceProvider extends BaseServiceProvider {
     public function boot()
     {
         $this->app->singleton(GameContract::class, function($app) {
-            return new Game(
+            $game = new Game(
                 config('app.name'),
-                $app[DiceContract::class],
-                config('game.chance_calculators'),
-                $this->getCrimes()
+                $app[DiceContract::class]
             );
+
+            $game->setChanceCalculators($this->getChanceCalculators());
+            $game->setCrimes($this->getCrimes());
+
+            return $game;
         });
+    }
+
+    private function getChanceCalculators()
+    {
+        return config('game.chance_calculators');
     }
 
     private function getCrimes() : CrimesCollection

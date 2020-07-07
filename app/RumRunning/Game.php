@@ -2,6 +2,7 @@
 
 namespace App\RumRunning;
 
+use App\Game\Contracts\ChanceCalculatorContract;
 use App\Game\Contracts\DiceContract;
 use App\Game\Game as BaseGame;
 use App\Game\Contracts\PlayerContract;
@@ -15,23 +16,6 @@ class Game extends BaseGame {
     private $crimes;
 
     /**
-     * Game constructor.
-     * @param string $name
-     * @param DiceContract $dice
-     * @param array $chanceCalculators
-     * @param CrimesCollection $crimes
-     */
-    public function __construct(string $name,
-                                DiceContract $dice,
-                                array $chanceCalculators,
-                                CrimesCollection $crimes)
-    {
-        parent::__construct($name, $dice, $chanceCalculators);
-
-        $this->crimes = $crimes;
-    }
-
-    /**
      * @return CrimesCollection
      */
     public function crimes(): CrimesCollection
@@ -39,8 +23,16 @@ class Game extends BaseGame {
         return $this->crimes;
     }
 
-    public function attemptCrime(PlayerContract $player, Crime $crime)
+    public function setCrimes(CrimesCollection $crimes)
     {
-        return $this->skilledAttemptBy($player, $crime)->attempt();
+        $this->crimes = $crimes;
+    }
+
+    public function attemptCrime(PlayerContract $player, Crime $crime, ChanceCalculatorContract $chanceCalculator = null)
+    {
+        $attempt = $this->skilledAttemptBy($player, $crime);
+        $attempt->setChanceCalculator($chanceCalculator);
+
+        return $attempt->attempt();
     }
 }

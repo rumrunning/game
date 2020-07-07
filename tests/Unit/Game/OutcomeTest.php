@@ -98,31 +98,6 @@ class OutcomeTest extends TestCase {
         $outcome->setRewards($rewards);
         $outcome->setPunishments($punishments);
 
-        // Should only see skill reward as money has 0 chance of discovery by default
-        $claims = $outcome->claims();
-
-        $this->assertInstanceOf(ClaimCollection::class, $claims);
-        $this->assertCount(1, $claims);
-        $this->containsOnlyInstancesOf(Claim::class, $claims);
-
-        $skillClaim = $claims->first();
-        $this->assertEquals(data_get($rewards, 1), $skillClaim->getCollectable());
-        $this->assertSame(0.1, $skillClaim->getValue());
-    }
-
-    public function testSuccessfulWithMoneyClaims()
-    {
-        $rewards = $this->rewards();
-        $punishments = $this->punishments();
-
-        $rewards[0]->setDiscoveryChance(1);
-
-        $outcome = new Outcome($this->game());
-
-        $outcome->setSuccessful(true);
-        $outcome->setRewards($rewards);
-        $outcome->setPunishments($punishments);
-
         // Should see both money and skill rewards as the money chance of discovery is set to 1 (100%)
         $claims = $outcome->claims();
 

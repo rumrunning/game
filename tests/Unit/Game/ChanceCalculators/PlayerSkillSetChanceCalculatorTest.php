@@ -5,6 +5,7 @@ namespace Tests\Unit\Game\ChanceCalculators;
 use App\Game\ChanceCalculators\PlayerSkillSetChanceCalculator;
 use App\Game\Claim;
 use App\Game\ClaimCollection;
+use App\Game\Exceptions\PlayerNotSetException;
 use App\RumRunning\Crimes\CrimeFactory;
 use App\RumRunning\Rewards\Skill;
 use App\User;
@@ -27,9 +28,22 @@ class PlayerSkillSetChanceCalculatorTest extends TestCase {
 
         $player = factory(User::class)->make();
 
-        $calc = new PlayerSkillSetChanceCalculator($player);
+        $calc = new PlayerSkillSetChanceCalculator();
+        $calc->asPlayer($player);
 
         $this->assertInstanceOf(PlayerSkillSetChanceCalculator::class, $calc);
+    }
+
+    public function testGetActionPercentageRequiresPlayer()
+    {
+        $this->expectException(PlayerNotSetException::class);
+
+        $this->seed();
+        $crimesCollection = CrimeFactory::createFromArray($this->crimes());
+
+        $calc = new PlayerSkillSetChanceCalculator();
+
+        $calc->getActionPercentage($crimesCollection->first());
     }
 
     public function testGetActionPercentage()
@@ -39,7 +53,8 @@ class PlayerSkillSetChanceCalculatorTest extends TestCase {
         $player = $this->player();
         $crimesCollection = CrimeFactory::createFromArray($this->crimes());
 
-        $calc = new PlayerSkillSetChanceCalculator($player);
+        $calc = new PlayerSkillSetChanceCalculator();
+        $calc->asPlayer($player);
 
         $this->assertSame(0.9, $calc->getActionPercentage($crimesCollection->first()));
     }
@@ -55,7 +70,8 @@ class PlayerSkillSetChanceCalculatorTest extends TestCase {
         $player->collectClaimsFor($action, $claimCollection);
 
 
-        $calc = new PlayerSkillSetChanceCalculator($player);
+        $calc = new PlayerSkillSetChanceCalculator();
+        $calc->asPlayer($player);
 
         $this->assertSame(100, $calc->getActionPercentage($action));
     }

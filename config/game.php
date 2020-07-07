@@ -14,7 +14,7 @@ return [
             'difficulty' => 0.1,
             'outcomes' => [
                 'rewards' => [
-                        // There is a 100% chance of getting money when rewards are collected
+                    // There is a 100% chance of getting money when rewards are collected
                     new \App\RumRunning\Rewards\Money(50, 110),
                     new \App\RumRunning\Rewards\Skill(1, 3),
 

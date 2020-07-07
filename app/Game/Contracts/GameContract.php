@@ -8,5 +8,5 @@ interface GameContract {
 
     public function dice();
 
-    public function defaultChanceCalculator(PlayerContract $player) : ChanceCalculatorContract;
+    public function defaultChanceCalculator() : ChanceCalculatorContract;
 }

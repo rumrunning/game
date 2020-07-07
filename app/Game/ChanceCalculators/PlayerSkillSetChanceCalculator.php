@@ -5,23 +5,23 @@ namespace App\Game\ChanceCalculators;
 use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\ChanceCalculatorContract;
 use App\Game\Contracts\PlayerContract;
+use App\Game\Contracts\PlayerRequired;
+use App\Game\Exceptions\PlayerNotSetException;
+use App\Game\Traits\InteractsAsPlayer;
 
-class PlayerSkillSetChanceCalculator implements ChanceCalculatorContract {
+class PlayerSkillSetChanceCalculator implements ChanceCalculatorContract, PlayerRequired {
 
-    private $player;
-
-    /**
-     * PlayerSkillSetChanceCalculator constructor.
-     * @param PlayerContract $player
-     */
-    public function __construct(PlayerContract $player)
-    {
-        $this->player = $player;
-    }
+    use InteractsAsPlayer;
 
     public function getActionPercentage(ActionContract $action)
     {
-        $skill = $this->player->getSkillSetPoints(get_class($action));
+        $player = $this->getPlayer();
+
+        if (is_null($player)) {
+            throw new PlayerNotSetException("You need to set a player first. Try adding 'asPlayer' method.");
+        }
+
+        $skill = $player->getSkillSetPoints(get_class($action));
         $actionChance = 1 - $action->getDifficulty();
 
 

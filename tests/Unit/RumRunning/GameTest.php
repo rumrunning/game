@@ -39,22 +39,26 @@ class GameTest extends TestCase {
 
     private function game()
     {
-        return new Game(
+        $game = new Game(
             $this->name(),
-            $this->dice(),
-            $this->chanceCalculators(),
-            $this->crimesCollection()
+            $this->dice()
         );
+
+        $game->setCrimes($this->crimesCollection());
+        $game->setChanceCalculators($this->chanceCalculators());
+
+        return $game;
     }
 
     public function test__construct()
     {
         $game = new Game(
             $this->name(),
-            $this->dice(),
-            $this->chanceCalculators(),
-            $this->crimesCollection()
+            $this->dice()
         );
+
+        $game->setCrimes($this->crimesCollection());
+        $game->setChanceCalculators($this->chanceCalculators());
 
         $this->assertInstanceOf(Game::class, $game);
     }
@@ -75,10 +79,11 @@ class GameTest extends TestCase {
 
         $game = new Game(
             $this->name(),
-            $this->dice(),
-            $this->chanceCalculators(),
-            $crimeCollection
+            $this->dice()
         );
+
+        $game->setCrimes($crimeCollection);
+        $game->setChanceCalculators($this->chanceCalculators());
 
         $this->assertInstanceOf(Outcome::class, $game->attemptCrime($player, $crimeCollection->first()));
     }

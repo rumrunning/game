@@ -20,13 +20,11 @@ abstract class Game implements GameContract {
      * Game constructor.
      * @param $name
      * @param $dice
-     * @param $chanceCalculators
      */
-    public function __construct(string $name, DiceContract $dice, array $chanceCalculators)
+    public function __construct(string $name, DiceContract $dice)
     {
         $this->name = $name;
         $this->dice = $dice;
-        $this->chanceCalculators = $chanceCalculators;
     }
 
     public function name() : string
@@ -42,11 +40,16 @@ abstract class Game implements GameContract {
         return $this->dice;
     }
 
-    public function defaultChanceCalculator(PlayerContract $player) : ChanceCalculatorContract
+    public function setChanceCalculators(array $chanceCalculators)
+    {
+        $this->chanceCalculators = $chanceCalculators;
+    }
+
+    public function defaultChanceCalculator() : ChanceCalculatorContract
     {
         $chanceCalculatorClass = $this->chanceCalculators['default'];
 
-        return new $chanceCalculatorClass($player);
+        return new $chanceCalculatorClass();
     }
 
     protected function skilledAttemptBy(PlayerContract $player, ActionContract $action)

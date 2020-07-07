@@ -15,6 +15,8 @@ class Outcome {
 
     private $successful = false;
 
+    private $claimedCollection;
+
     /**
      * Outcome constructor.
      * @param GameContract $game
@@ -50,6 +52,11 @@ class Outcome {
 
     public function claims()
     {
+        // Ensure that the claims remain the same
+        if (! is_null($this->claimedCollection)) {
+            return $this->claimedCollection;
+        }
+
         $claimCollection = new ClaimCollection();
 
         if ($this->wasSuccessful()) {
@@ -71,9 +78,9 @@ class Outcome {
             return $collectable;
         })->all();
 
-        $claimCollection = (new ClaimCollection($collectableClaims))->mapInto(Claim::class);
+        $this->claimedCollection = (new ClaimCollection($collectableClaims))->mapInto(Claim::class);
 
-        return $claimCollection;
+        return $this->claimedCollection;
     }
 
     public function wasSuccessful()
