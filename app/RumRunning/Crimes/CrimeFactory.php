@@ -4,9 +4,9 @@ namespace App\RumRunning\Crimes;
 
 class CrimeFactory {
 
-    public static function createFromArray(array $crimes) : CrimesCollection
+    public static function createFromArray(array $crimes) : CrimeCollection
     {
-        return (new CrimesCollection($crimes))
+        return (new CrimeCollection($crimes))
             ->map(function ($crime) {
                 return new Crime(
                     $crime['code'],

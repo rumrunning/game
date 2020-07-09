@@ -11,4 +11,6 @@ interface ActionContract {
     public function getPunishments();
 
     public function getDifficulty();
+
+    public function getPresenter() : ActionPresenterContract;
 }

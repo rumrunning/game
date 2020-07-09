@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Models;
 
+use App\Game\ChanceCalculators\PlayerSkillSetChanceCalculator;
+use App\Game\ChanceCalculators\ZeroChanceCalculator;
 use App\Game\Claim;
 use App\Game\ClaimCollection;
 use App\Game\Outcome;
@@ -25,6 +27,15 @@ class UserTest extends TestCase {
     private function player()
     {
         return User::first();
+    }
+
+    public function test__construct()
+    {
+        $player = new User();
+
+        $this->assertInstanceOf(
+            PlayerSkillSetChanceCalculator::class, $player->getDefaultActionChanceCalculator()
+        );
     }
 
     public function testStartWith0Monies()
@@ -62,6 +73,35 @@ class UserTest extends TestCase {
         $player = $this->player();
 
         $this->assertInstanceOf(SkillSet::class, $player->getSkillSet(Crime::class));
+    }
+
+    public function testGetActionChanceCalculator()
+    {
+        $player = new User();
+
+        $this->assertInstanceOf(
+            PlayerSkillSetChanceCalculator::class, $player->getActionChanceCalculator(Crime::class)
+        );
+    }
+
+    public function testGetDefaultActionChanceCalculator()
+    {
+        $player = new User();
+
+        $this->assertInstanceOf(
+            PlayerSkillSetChanceCalculator::class, $player->getActionChanceCalculator(Crime::class)
+        );
+    }
+
+    public function testSetDefaultActionChanceCalculator()
+    {
+        $player = new User();
+
+        $player->setDefaultActionChanceCalculator(new ZeroChanceCalculator());
+
+        $this->assertInstanceOf(
+            ZeroChanceCalculator::class, $player->getActionChanceCalculator(Crime::class)
+        );
     }
 
     public function testAttemptCrime()

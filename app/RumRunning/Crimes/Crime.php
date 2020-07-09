@@ -3,9 +3,10 @@
 namespace App\RumRunning\Crimes;
 
 use App\Game\Contracts\ActionContract;
+use App\Game\Contracts\ActionPresenterContract;
 use Illuminate\Contracts\Support\Arrayable;
 
-class Crime implements ActionContract, Arrayable {
+class Crime implements ActionContract {
 
     private $code;
 
@@ -70,11 +71,12 @@ class Crime implements ActionContract, Arrayable {
         return $this->difficulty;
     }
 
-    public function toArray()
+    public function getPresenter() : ActionPresenterContract
     {
-        return [
-            'code' => $this->getCode(),
-            'description' => $this->getDescription(),
-        ];
+        $presenter = new CrimePresenter($this);
+        $presenter->setCode($this->getCode());
+        $presenter->setDescription($this->getDescription());
+
+        return $presenter;
     }
 }

@@ -9,7 +9,6 @@ use App\Game\Traits\InteractsWithGame;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Mockery\MockInterface;
 use Tests\TestCase;
 use App\Game\SkilledAttempt;
 
@@ -54,13 +53,13 @@ class SkilledAttemptTest extends TestCase {
         $game = $this->game();
         $player = $this->player();
 
+        $player->setDefaultActionChanceCalculator(new HundredChanceCalculator());
+
         $skilledAttempt = new SkilledAttempt(
             $game,
             $player,
             $game->crimes()->first()
         );
-
-        $skilledAttempt->setChanceCalculator(new HundredChanceCalculator());
 
         $outcome = $skilledAttempt->attempt();
 
@@ -74,13 +73,13 @@ class SkilledAttemptTest extends TestCase {
         $game = $this->game();
         $player = $this->player();
 
+        $player->setDefaultActionChanceCalculator(new ZeroChanceCalculator());
+
         $skilledAttempt = new SkilledAttempt(
             $game,
             $player,
             $game->crimes()->first()
         );
-
-        $skilledAttempt->setChanceCalculator(new ZeroChanceCalculator());
 
         $outcome = $skilledAttempt->attempt();
 

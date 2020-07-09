@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Controllers\Game;
 
+use App\Game\ChanceCalculators\HundredChanceCalculator;
 use App\Http\Controllers\Game\CrimeController;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class CrimeControllerTest extends TestCase {
@@ -37,7 +39,7 @@ class CrimeControllerTest extends TestCase {
     {
         $response = $this->actingAs($this->user)
             ->post('/crimes/commit', [
-                'crime' => 'pickpocket'
+                'code' => 'pickpocket'
             ])
         ;
 

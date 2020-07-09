@@ -52,7 +52,8 @@ class CrimesTest extends TestCase {
 
         $crime = $crimes->select($crimeCode);
 
-        $outcome = $player->attemptCrime($crime, new HundredChanceCalculator());
+        $player->setDefaultActionChanceCalculator(new HundredChanceCalculator());
+        $outcome = $player->attemptCrime($crime);
 
         $this->assertTrue($outcome->wasSuccessful());
 
@@ -69,7 +70,8 @@ class CrimesTest extends TestCase {
 
         $crime = $crimes->select($crimeCode);
 
-        $outcome = $player->attemptCrime($crime, new ZeroChanceCalculator());
+        $player->setDefaultActionChanceCalculator(new ZeroChanceCalculator());
+        $outcome = $player->attemptCrime($crime);
 
         $this->assertNotTrue($outcome->wasSuccessful());
 
@@ -86,7 +88,8 @@ class CrimesTest extends TestCase {
 
         $crime = $crimes->select($crimeCode);
 
-        $outcome = $player->attemptCrime($crime, new HundredChanceCalculator());
+        $player->setDefaultActionChanceCalculator(new HundredChanceCalculator());
+        $outcome = $player->attemptCrime($crime);
 
         $claims = $outcome->claims();
         $player->collectClaimsFor($crime, $claims);
@@ -106,7 +109,8 @@ class CrimesTest extends TestCase {
 
         $crime = $crimes->select($crimeCode);
 
-        $outcome = $player->attemptCrime($crime, new ZeroChanceCalculator());
+        $player->setDefaultActionChanceCalculator(new ZeroChanceCalculator());
+        $outcome = $player->attemptCrime($crime);
 
         $claims = $outcome->claims();
         $player->collectClaimsFor($crime, $claims);

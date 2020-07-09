@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Game\ChanceCalculators\PlayerSkillSetChanceCalculator;
 use App\Game\Claim;
 use App\Game\ClaimCollection;
 use App\Game\Contracts\ActionContract;
@@ -48,9 +49,25 @@ class User extends Authenticatable implements PlayerContract
         'monies' => 'integer',
     ];
 
-    public function attemptCrime(Crime $crime, ChanceCalculatorContract $chanceCalculator = null)
+    /**
+     * @var ChanceCalculatorContract $defaultActionChanceCalculator
+     */
+    private $defaultActionChanceCalculator;
+
+    /**
+     * User constructor.
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
     {
-        return $this->game()->attemptCrime($this, $crime, $chanceCalculator);
+        parent::__construct($attributes);
+
+        $this->defaultActionChanceCalculator = new PlayerSkillSetChanceCalculator($this);
+    }
+
+    public function attemptCrime(Crime $crime)
+    {
+        return $this->game()->attemptCrime($this, $crime);
     }
 
     public function skillSets()
@@ -72,6 +89,33 @@ class User extends Authenticatable implements PlayerContract
         return $this->getSkillSet($class)->points;
     }
 
+    public function getActionChanceCalculator($class) : ChanceCalculatorContract
+    {
+        if ($class instanceof ActionContract) {
+            $class = get_class($class);
+        }
+
+        switch ($class) {
+            default:
+                return $this->getDefaultActionChanceCalculator();
+        }
+    }
+
+    /**
+     * @return ChanceCalculatorContract
+     */
+    public function getDefaultActionChanceCalculator(): ChanceCalculatorContract
+    {
+        return $this->defaultActionChanceCalculator;
+    }
+
+    /**
+     * @param ChanceCalculatorContract $defaultActionChanceCalculator
+     */
+    public function setDefaultActionChanceCalculator(ChanceCalculatorContract $defaultActionChanceCalculator): void
+    {
+        $this->defaultActionChanceCalculator = $defaultActionChanceCalculator;
+    }
 
     public function collectClaimsFor(ActionContract $action, ClaimCollection $claims)
     {

@@ -40,18 +40,6 @@ abstract class Game implements GameContract {
         return $this->dice;
     }
 
-    public function setChanceCalculators(array $chanceCalculators)
-    {
-        $this->chanceCalculators = $chanceCalculators;
-    }
-
-    public function defaultChanceCalculator() : ChanceCalculatorContract
-    {
-        $chanceCalculatorClass = $this->chanceCalculators['default'];
-
-        return new $chanceCalculatorClass();
-    }
-
     protected function skilledAttemptBy(PlayerContract $player, ActionContract $action)
     {
         return new SkilledAttempt($this, $player, $action);

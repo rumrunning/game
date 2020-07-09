@@ -4,7 +4,7 @@ namespace Tests\Unit\RumRunning\Crimes;
 
 use App\RumRunning\Crimes\Crime;
 use App\RumRunning\Crimes\CrimeFactory;
-use App\RumRunning\Crimes\CrimesCollection;
+use App\RumRunning\Crimes\CrimeCollection;
 use Tests\TestCase;
 
 class CrimeFactoryTest extends TestCase {
@@ -15,7 +15,7 @@ class CrimeFactoryTest extends TestCase {
 
         $crimesCollection = CrimeFactory::createFromArray($crimes);
 
-        $this->assertInstanceOf(CrimesCollection::class, $crimesCollection);
+        $this->assertInstanceOf(CrimeCollection::class, $crimesCollection);
 
         $this->assertCount(count($crimes), $crimesCollection);
 

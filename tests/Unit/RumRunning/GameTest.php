@@ -6,7 +6,7 @@ use App\Game\ChanceCalculators\PlayerSkillSetChanceCalculator;
 use App\Game\Dice;
 use App\Game\Outcome;
 use App\RumRunning\Crimes\CrimeFactory;
-use App\RumRunning\Crimes\CrimesCollection;
+use App\RumRunning\Crimes\CrimeCollection;
 use App\RumRunning\Game;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -27,14 +27,9 @@ class GameTest extends TestCase {
         return new Dice();
     }
 
-    private function chanceCalculators()
-    {
-        return ['default' => PlayerSkillSetChanceCalculator::class];
-    }
-
     private function crimesCollection()
     {
-        return new CrimesCollection();
+        return new CrimeCollection();
     }
 
     private function game()
@@ -45,7 +40,6 @@ class GameTest extends TestCase {
         );
 
         $game->setCrimes($this->crimesCollection());
-        $game->setChanceCalculators($this->chanceCalculators());
 
         return $game;
     }
@@ -58,7 +52,6 @@ class GameTest extends TestCase {
         );
 
         $game->setCrimes($this->crimesCollection());
-        $game->setChanceCalculators($this->chanceCalculators());
 
         $this->assertInstanceOf(Game::class, $game);
     }
@@ -67,7 +60,7 @@ class GameTest extends TestCase {
     {
         $game = $this->game();
 
-        $this->assertInstanceOf(CrimesCollection::class, $game->crimes());
+        $this->assertInstanceOf(CrimeCollection::class, $game->crimes());
     }
 
     public function testAttemptCrime()
@@ -83,7 +76,6 @@ class GameTest extends TestCase {
         );
 
         $game->setCrimes($crimeCollection);
-        $game->setChanceCalculators($this->chanceCalculators());
 
         $this->assertInstanceOf(Outcome::class, $game->attemptCrime($player, $crimeCollection->first()));
     }

@@ -5,7 +5,7 @@ namespace App\RumRunning;
 use App\Game\Contracts\DiceContract;
 use App\Game\Contracts\GameContract;
 use App\RumRunning\Crimes\CrimeFactory;
-use App\RumRunning\Crimes\CrimesCollection;
+use App\RumRunning\Crimes\CrimeCollection;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider {
@@ -18,7 +18,6 @@ class ServiceProvider extends BaseServiceProvider {
                 $app[DiceContract::class]
             );
 
-            $game->setChanceCalculators($this->getChanceCalculators());
             $game->setCrimes($this->getCrimes());
 
             return $game;
@@ -30,7 +29,7 @@ class ServiceProvider extends BaseServiceProvider {
         return config('game.chance_calculators');
     }
 
-    private function getCrimes() : CrimesCollection
+    private function getCrimes() : CrimeCollection
     {
         return CrimeFactory::createFromArray(config('game.crimes'));
     }

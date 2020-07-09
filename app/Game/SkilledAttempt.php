@@ -33,8 +33,10 @@ class SkilledAttempt {
 
     public function attempt() : Outcome
     {
+        $action = $this->action;
+
         $result = $this->game->dice()->roll();
-        $chance = $this->getChanceCalculator()->getActionPercentage($this->action);
+        $chance = $this->player->getActionChanceCalculator($action)->getActionPercentage($action);
 
         $outcome = new Outcome($this->game);
         $outcome->setSuccessful(false);
@@ -47,31 +49,5 @@ class SkilledAttempt {
         }
 
         return $outcome;
-    }
-
-    /**
-     * @return ChanceCalculatorContract
-     */
-    private function getChanceCalculator() : ChanceCalculatorContract
-    {
-        $chanceCalculator = $this->chanceCalculator;
-
-        if (is_null($chanceCalculator)) {
-            $chanceCalculator = $this->game->defaultChanceCalculator();
-        }
-
-        if ($chanceCalculator instanceof PlayerRequired) {
-            $chanceCalculator->asPlayer($this->player);
-        }
-
-        return $chanceCalculator;
-    }
-
-    /**
-     * @param ChanceCalculatorContract $chanceCalculator
-     */
-    public function setChanceCalculator(ChanceCalculatorContract $chanceCalculator = null): void
-    {
-        $this->chanceCalculator = $chanceCalculator;
     }
 }

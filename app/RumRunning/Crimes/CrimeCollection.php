@@ -2,11 +2,11 @@
 
 namespace App\RumRunning\Crimes;
 
+use App\Game\Collections\ActionCollection;
 use App\Game\Contracts\ChanceCalculatorContract;
 use App\RumRunning\Crimes\Exceptions\NoSuchCrimeAvailable;
-use Illuminate\Support\Collection;
 
-class CrimesCollection extends Collection {
+class CrimeCollection extends ActionCollection {
 
     public function select($crimeCode)
     {
@@ -19,12 +19,5 @@ class CrimesCollection extends Collection {
         }
 
         return $crime;
-    }
-
-    public function withCalculatedChances(ChanceCalculatorContract $chanceCalculator)
-    {
-        $this->map(function(Crime $crime) {
-           // $crime->
-        });
     }
 }

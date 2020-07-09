@@ -4,7 +4,7 @@ namespace Tests\Unit\RumRunning\Crimes;
 
 use App\Game\Traits\InteractsWithGame;
 use App\RumRunning\Crimes\CrimeFactory;
-use App\RumRunning\Crimes\CrimesCollection;
+use App\RumRunning\Crimes\CrimeCollection;
 use App\RumRunning\Crimes\Exceptions\NoSuchCrimeAvailable;
 use Tests\TestCase;
 

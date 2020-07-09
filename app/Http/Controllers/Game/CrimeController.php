@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Game;
 
 use App\Game\ActionOutcomeMessage;
 use App\Game\ChanceCalculators\HundredChanceCalculator;
+use App\Game\ChanceCalculators\PlayerSkillSetChanceCalculator;
+use App\Game\Contracts\ChanceCalculatorContract;
 use App\Game\Contracts\GameContract;
+use App\Game\Presenters\ActionsPresenter;
 use App\Http\Controllers\Controller;
 use App\RumRunning\Crimes\Exceptions\NoSuchCrimeAvailable;
 use Illuminate\Http\Request;
@@ -13,27 +16,34 @@ class CrimeController extends Controller  {
 
     private $game;
 
-    public function __construct(GameContract $game)
+    private $request;
+
+    public function __construct(GameContract $game, Request $request)
     {
         $this->game = $game;
+
+        $this->request = $request;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        return $this->game->crimes()->withCalculatedChances(static::getChanceCalculator());
+        $crimes = $this->game->crimes();
+        $player = $this->request->user();
+
+        return (new ActionsPresenter($crimes))->calculatedChancesAs($player);
     }
 
     public function commit(Request $request)
     {
         $request->validate([
-            'crime' => ['required'],
+            'code' => ['required'],
         ]);
 
         $crimes = $this->game->crimes();
-        $crime = $crimes->select($request->get('crime', -1));
+        $crime = $crimes->select($request->get('code', -1));
 
         $player = $request->user();
-        $outcome = $player->attemptCrime($crime, static::getChanceCalculator());
+        $outcome = $player->attemptCrime($crime);
 
         $player->collectClaimsFor($crime, $outcome->claims());
 
@@ -47,10 +57,5 @@ class CrimeController extends Controller  {
         }
 
         return redirect()->back()->with($responseData);
-    }
-
-    private static function getChanceCalculator()
-    {
-        return new HundredChanceCalculator();
     }
 }

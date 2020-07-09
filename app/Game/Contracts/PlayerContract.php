@@ -9,4 +9,6 @@ interface PlayerContract {
     public function getSkillSetPoints($class);
 
     public function collectClaimsFor(ActionContract $action, ClaimCollection $claims);
+
+    public function getActionChanceCalculator($class) : ChanceCalculatorContract;
 }
