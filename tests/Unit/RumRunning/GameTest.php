@@ -4,6 +4,7 @@ namespace Tests\Unit\RumRunning;
 
 use App\Game\Dice;
 use App\Game\Outcome;
+use App\RumRunning\Crimes\Crime;
 use App\RumRunning\Crimes\CrimeFactory;
 use App\RumRunning\Crimes\CrimeCollection;
 use App\RumRunning\Game;
@@ -62,6 +63,18 @@ class GameTest extends TestCase {
         $game->setCrimes($this->crimesCollection());
 
         $this->assertInstanceOf(Game::class, $game);
+    }
+
+    public function testStartTimer()
+    {
+        $game = new Game(
+            $this->name(),
+            $this->dice(),
+            $this->timerRepo()
+        );
+
+        $startedTimer = $game->startTimer(factory(User::class)->create(), Crime::class, 60);
+        $this->assertNull($startedTimer);
     }
 
     public function testCrimes()

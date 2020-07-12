@@ -18,7 +18,7 @@ class Timer extends Model {
 
     public function player()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function scopeForPlayer($query, PlayerContract $player)

@@ -47,6 +47,16 @@ class UserTest extends TestCase {
         $this->assertSame(0, $player->monies);
     }
 
+    public function testTimers()
+    {
+        $this->seed();
+
+        $player = $this->player();
+
+        $this->assertInstanceOf(HasMany::class, $player->timers());
+        $this->assertInstanceOf(Collection::class, $player->timers);
+    }
+
     public function testSkillSets()
     {
         $this->seed();

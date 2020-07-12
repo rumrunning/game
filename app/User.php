@@ -71,6 +71,11 @@ class User extends Authenticatable implements PlayerContract
         return $this->game()->attemptCrime($this, $crime);
     }
 
+    public function timers()
+    {
+        return $this->hasMany(Timer::class);
+    }
+
     public function skillSets()
     {
         return $this->hasMany(SkillSet::class);

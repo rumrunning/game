@@ -104,4 +104,34 @@ class CrimeTest extends TestCase {
 
         $this->assertSame($crimeProps['difficulty'], $crime->getDifficulty());
     }
+
+    public function testGetTimer()
+    {
+        $crimeProps = $this->crimeProperties();
+
+        $crime = new Crime(
+            $crimeProps['code'],
+            $crimeProps['description'],
+            $crimeProps['difficulty'],
+            $crimeProps['outcomes']
+        );
+
+        $this->assertIsString($crime->getTimer());
+        $this->assertSame(Crime::class, $crime->getTimer());
+    }
+
+    public function testGetTimerDuration()
+    {
+        $crimeProps = $this->crimeProperties();
+
+        $crime = new Crime(
+            $crimeProps['code'],
+            $crimeProps['description'],
+            $crimeProps['difficulty'],
+            $crimeProps['outcomes']
+        );
+
+        $this->assertIsInt($crime->getTimerDuration());
+        $this->assertSame(30, $crime->getTimerDuration());
+    }
 }
