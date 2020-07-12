@@ -17,8 +17,15 @@ use Illuminate\Validation\ValidationException;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::namespace('Game')->group(function () {
+        Route::crimes('/crimes', 'CrimeController@index');
+        Route::crimes('/crimes/commit', 'CrimeController@commit');
+    });
 });
 
 Route::post('/sanctum/token', function (Request $request) {
