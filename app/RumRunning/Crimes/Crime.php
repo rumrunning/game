@@ -4,9 +4,9 @@ namespace App\RumRunning\Crimes;
 
 use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\ActionPresenterContract;
-use Illuminate\Contracts\Support\Arrayable;
+use App\Game\Contracts\TimerRestrictedContract;
 
-class Crime implements ActionContract {
+class Crime implements ActionContract, TimerRestrictedContract {
 
     private $code;
 
@@ -78,5 +78,16 @@ class Crime implements ActionContract {
         $presenter->setDescription($this->getDescription());
 
         return $presenter;
+    }
+
+    public function getTimer()
+    {
+        return self::class;
+    }
+
+    // In seconds
+    public function getTimerDuration()
+    {
+        return 30;
     }
 }

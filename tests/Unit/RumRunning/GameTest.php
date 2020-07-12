@@ -2,12 +2,13 @@
 
 namespace Tests\Unit\RumRunning;
 
-use App\Game\ChanceCalculators\PlayerSkillSetChanceCalculator;
 use App\Game\Dice;
 use App\Game\Outcome;
 use App\RumRunning\Crimes\CrimeFactory;
 use App\RumRunning\Crimes\CrimeCollection;
 use App\RumRunning\Game;
+use App\RumRunning\Repositories\EloquentTimerRepository;
+use App\Timer;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,11 +33,17 @@ class GameTest extends TestCase {
         return new CrimeCollection();
     }
 
+    private function timerRepo()
+    {
+        return new EloquentTimerRepository(new Timer());
+    }
+
     private function game()
     {
         $game = new Game(
             $this->name(),
-            $this->dice()
+            $this->dice(),
+            $this->timerRepo()
         );
 
         $game->setCrimes($this->crimesCollection());
@@ -48,7 +55,8 @@ class GameTest extends TestCase {
     {
         $game = new Game(
             $this->name(),
-            $this->dice()
+            $this->dice(),
+            $this->timerRepo()
         );
 
         $game->setCrimes($this->crimesCollection());
@@ -72,7 +80,8 @@ class GameTest extends TestCase {
 
         $game = new Game(
             $this->name(),
-            $this->dice()
+            $this->dice(),
+            $this->timerRepo()
         );
 
         $game->setCrimes($crimeCollection);

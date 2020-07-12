@@ -91,9 +91,6 @@ class CrimesTest extends TestCase {
         $player->setDefaultActionChanceCalculator(new HundredChanceCalculator());
         $outcome = $player->attemptCrime($crime);
 
-        $claims = $outcome->claims();
-        $player->collectClaimsFor($crime, $claims);
-
         $this->assertSame(50, $player->monies);
         $this->assertSame(0.03, $player->getSkillSetPoints($crime));
     }
@@ -111,9 +108,6 @@ class CrimesTest extends TestCase {
 
         $player->setDefaultActionChanceCalculator(new ZeroChanceCalculator());
         $outcome = $player->attemptCrime($crime);
-
-        $claims = $outcome->claims();
-        $player->collectClaimsFor($crime, $claims);
 
         $this->assertSame(0, $player->monies);
         $this->assertSame(0.02, $player->getSkillSetPoints($crime));

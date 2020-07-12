@@ -7,6 +7,10 @@ return [
         ]
     ],
 
+    'timers' => [
+        \App\RumRunning\Crimes\Crime::class,
+    ],
+
     'crimes' => [
         [
             'code' => 'pickpocket',

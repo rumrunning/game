@@ -45,8 +45,6 @@ class CrimeController extends Controller  {
         $player = $request->user();
         $outcome = $player->attemptCrime($crime);
 
-        $player->collectClaimsFor($crime, $outcome->claims());
-
         $responseData = [
             'success' => $outcome->wasSuccessful(),
             'message' => (new ActionOutcomeMessage($crime, $outcome))->output(),

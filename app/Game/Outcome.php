@@ -50,7 +50,7 @@ class Outcome {
         $this->successful = $successful;
     }
 
-    public function claims()
+    public function claims() : ClaimCollection
     {
         // Ensure that the claims remain the same
         if (! is_null($this->claimedCollection)) {

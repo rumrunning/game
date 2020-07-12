@@ -7,7 +7,8 @@ use App\Game\Claim;
 use App\Game\ClaimCollection;
 use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\ChanceCalculatorContract;
-use App\Game\Contracts\PlayerContract;
+use App\RumRunning\Contracts\PlayerContract;
+use App\Game\Outcome;
 use App\Game\Traits\InteractsWithGame;
 use App\RumRunning\Crimes\Crime;
 use App\RumRunning\Rewards\Money;
@@ -65,7 +66,7 @@ class User extends Authenticatable implements PlayerContract
         $this->defaultActionChanceCalculator = new PlayerSkillSetChanceCalculator($this);
     }
 
-    public function attemptCrime(Crime $crime)
+    public function attemptCrime(Crime $crime) : Outcome
     {
         return $this->game()->attemptCrime($this, $crime);
     }

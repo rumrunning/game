@@ -2,10 +2,9 @@
 
 namespace App\RumRunning;
 
-use App\Game\Contracts\ChanceCalculatorContract;
-use App\Game\Contracts\DiceContract;
 use App\Game\Game as BaseGame;
-use App\Game\Contracts\PlayerContract;
+use App\RumRunning\Contracts\PlayerContract;
+use App\Game\Outcome;
 use App\RumRunning\Crimes\Crime;
 use App\RumRunning\Crimes\CrimeCollection;
 
@@ -28,10 +27,16 @@ class Game extends BaseGame {
         $this->crimes = $crimes;
     }
 
-    public function attemptCrime(PlayerContract $player, Crime $crime)
+    public function attemptCrime(PlayerContract $player, Crime $crime) : Outcome
     {
+        $this->beforeAttempt($player, $crime);
+
         $attempt = $this->skilledAttemptBy($player, $crime);
 
-        return $attempt->attempt();
+        $outcome = $attempt->attempt();
+
+        $this->afterAttempt($player, $crime, $outcome);
+
+        return $outcome;
     }
 }
