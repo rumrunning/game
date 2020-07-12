@@ -23,8 +23,8 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 
     Route::namespace('Game')->group(function () {
-        Route::crimes('/crimes', 'CrimeController@index');
-        Route::crimes('/crimes/commit', 'CrimeController@commit');
+        Route::get('/crimes', 'CrimeController@index');
+        Route::post('/crimes/commit', 'CrimeController@commit');
     });
 });
 
