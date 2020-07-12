@@ -1,5 +1,5 @@
 # Rum Running Game
-A text-based PHP game build using Laravel.
+A text-based PHP game built using Laravel.
 
 ### Setup
 ```bash
