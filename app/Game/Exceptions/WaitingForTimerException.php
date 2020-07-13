@@ -3,6 +3,7 @@
 namespace App\Game\Exceptions;
 
 use App\Game\Contracts\ActionContract;
+use Illuminate\Http\Request;
 
 class WaitingForTimerException extends \Exception {
 
@@ -33,7 +34,7 @@ class WaitingForTimerException extends \Exception {
     private $action;
 
     /**
-     * @return TimerModelContract
+     * @return string
      */
     public function getTimer(): string
     {
@@ -46,5 +47,12 @@ class WaitingForTimerException extends \Exception {
     public function setTimer(string $timer): void
     {
         $this->timer = $timer;
+    }
+
+    public function render(Request $request)
+    {
+        if ($request->wantsJson()) {
+            return response()->json(['success' => false, 'You must wait 30 seconds between each crime']);
+        }
     }
 }
