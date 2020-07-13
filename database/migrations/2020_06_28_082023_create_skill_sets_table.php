@@ -17,7 +17,7 @@ class CreateSkillSetsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('class');
-            $table->integer('points')->default(1);
+            $table->unsignedBigInteger('points')->default(10);
 
             $table->index(['user_id', 'class']);
         });

@@ -64,7 +64,7 @@ class SkillSetTest extends TestCase {
 
         $player = $this->player();
         $skillSet = factory(SkillSet::class)->make([
-            'points' => 0.2
+            'points' => 0.02
         ]);
 
         $this->assertSame(20.0, data_get($skillSet->getAttributes(), 'points', null));

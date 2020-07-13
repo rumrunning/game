@@ -20,12 +20,12 @@ class SkillSet extends Model {
 
     public function getPointsAttribute()
     {
-        return $this->attributes['points'] / 100;
+        return $this->attributes['points'] / 1000;
     }
 
     public function setPointsAttribute($value)
     {
-        return $this->attributes['points'] = $value * 100;
+        return $this->attributes['points'] = $value * 1000;
     }
 
     public function increasePoints($points)
