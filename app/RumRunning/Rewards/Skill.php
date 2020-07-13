@@ -18,6 +18,6 @@ class Skill extends RangedReward {
      */
     private function setTotal(int $total): void
     {
-        $this->total = $total / 100;
+        $this->total = $total / 1000;
     }
 }
