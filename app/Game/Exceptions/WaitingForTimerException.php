@@ -52,7 +52,15 @@ class WaitingForTimerException extends \Exception {
     public function render(Request $request)
     {
         if ($request->wantsJson()) {
-            return response()->json(['success' => false, 'You must wait 30 seconds between each crime']);
+            return response()->json(['success' => false, "message" => $this->responseMessage()]);
         }
+    }
+
+    private function responseMessage()
+    {
+        $timerDuration = $this->action->getTimerDuration();
+        $actionType = basename($this->action);
+
+        return "You must wait $timerDuration seconds between attempting a $actionType";
     }
 }
