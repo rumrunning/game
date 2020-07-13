@@ -3,12 +3,13 @@
 namespace App\RumRunning;
 
 use App\Game\Game as BaseGame;
+use App\RumRunning\Contracts\GameContract;
 use App\RumRunning\Contracts\PlayerContract;
 use App\Game\Outcome;
 use App\RumRunning\Crimes\Crime;
 use App\RumRunning\Crimes\CrimeCollection;
 
-class Game extends BaseGame {
+class Game extends BaseGame implements GameContract {
 
     private $name;
 

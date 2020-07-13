@@ -10,7 +10,7 @@ class SkillSet extends Model {
 
     public function player()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function scopeGetSkillSet($query, $class)

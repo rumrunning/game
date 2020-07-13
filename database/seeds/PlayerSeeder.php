@@ -19,5 +19,12 @@ class PlayerSeeder extends Seeder {
                 'class' => $skilledAction
             ]);
         }
+
+        foreach (config('game.timers') as $type) {
+            \App\Timer::updateOrCreate([
+                'user_id' => $user->getKey(),
+                'type' => $type
+            ]);
+        }
     }
 }

@@ -7,6 +7,6 @@ use Faker\Generator as Faker;
 
 $factory->define(SkillSet::class, function (Faker $faker) {
     return [
-        //
+        'class' => \App\RumRunning\Crimes\Crime::class
     ];
 });

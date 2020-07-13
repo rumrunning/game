@@ -2,8 +2,11 @@
 
 namespace Tests\Unit\Models;
 
+use App\RumRunning\Crimes\Crime;
 use App\Timer;
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -16,7 +19,7 @@ class TimerTest extends TestCase {
 
     private function player()
     {
-        return factory(User::class)->create();
+        return User::first();
     }
 
     public function testPlayer()
@@ -34,11 +37,38 @@ class TimerTest extends TestCase {
 
     public function testScopeForPlayer()
     {
+        $this->seed();
+        $player = $this->player();
+        $timer = factory(Timer::class)->make();
 
+        $timer->player()->associate($player)->save();
+
+        $queryBuilder = $timer->forPlayer($player);
+
+        $this->assertInstanceOf(Builder::class, $queryBuilder);
     }
 
     public function testScopeType()
     {
+        $this->seed();
+        $player = $this->player();
+        $timer = factory(Timer::class)->make();
 
+        $timer->player()->associate($player)->save();
+
+        $queryBuilder = $timer->type(Crime::class);
+
+        $this->assertInstanceOf(Builder::class, $queryBuilder);
+    }
+
+    public function testEndsAtCastsAsCarbon()
+    {
+        $this->seed();
+        $player = $this->player();
+        $timer = factory(Timer::class)->make();
+
+        $timer->player()->associate($player)->save();
+
+        $this->assertInstanceOf(Carbon::class, $timer->ends_at);
     }
 }

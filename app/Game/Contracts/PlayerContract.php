@@ -12,5 +12,7 @@ interface PlayerContract {
 
     public function collectClaimsFor(ActionContract $action, ClaimCollection $claims);
 
+    public function setDefaultActionChanceCalculator(ChanceCalculatorContract $chanceCalculator) : void;
+
     public function getActionChanceCalculator($class) : ChanceCalculatorContract;
 }

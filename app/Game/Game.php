@@ -7,8 +7,10 @@ use App\Game\Contracts\ChanceCalculatorContract;
 use App\Game\Contracts\DiceContract;
 use App\Game\Contracts\GameContract;
 use App\Game\Contracts\PlayerContract;
+use App\Game\Contracts\TimerModelContract;
 use App\Game\Contracts\TimerRepositoryContract;
 use App\Game\Contracts\TimerRestrictedContract;
+use App\Game\Exceptions\WaitingForTimerException;
 use Carbon\Carbon;
 
 abstract class Game implements GameContract {
@@ -45,16 +47,41 @@ abstract class Game implements GameContract {
         return $this->dice;
     }
 
-    public function startTimer(PlayerContract $player, string $timer, int $seconds)
+    public function startTimer(PlayerContract $player, string $timer, int $seconds) : TimerModelContract
     {
         $timerUntil = Carbon::now()->addSeconds($seconds);
 
-        $this->timerRepo->forPlayer($player)->setUntil($timer, $timerUntil);
+        return $this->timerRepo->forPlayer($player)->setUntil($timer, $timerUntil);
+
+    }
+
+    public function waitingForTimer(PlayerContract $player, string $timer) : bool
+    {
+        $timer = $this->timerRepo->forPlayer($player)->getTimer($timer);
+
+        if (is_null($timer)) {
+            return false;
+        }
+
+        if (is_null($timer->getEndsAt())) {
+            return false;
+        }
+
+        return $timer->getEndsAt()->greaterThan(Carbon::now());
     }
 
     protected function beforeAttempt(PlayerContract $player, ActionContract $action)
     {
+        if ($action instanceof TimerRestrictedContract) {
+            $timer = $action->getTimer();
+            $isWaiting = $this->waitingForTimer($player, $timer);
 
+            $exception = new WaitingForTimerException("The timer '$timer' is still counting down.");
+            $exception->setAction($action);
+            $exception->setTimer($timer);
+
+            throw_if($isWaiting, $exception);
+        }
     }
 
     protected function afterAttempt(PlayerContract $player, ActionContract $action, Outcome $outcome)

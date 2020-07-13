@@ -18,7 +18,8 @@ class CreateTimersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('type');
             $table->timestamp('ends_at')->nullable();
-            $table->timestamps();
+
+            $table->index(['user_id', 'type']);
         });
     }
 

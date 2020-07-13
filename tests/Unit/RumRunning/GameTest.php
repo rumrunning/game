@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\RumRunning;
 
+use App\Game\Contracts\TimerModelContract;
 use App\Game\Dice;
 use App\Game\Outcome;
 use App\RumRunning\Crimes\Crime;
@@ -36,7 +37,9 @@ class GameTest extends TestCase {
 
     private function timerRepo()
     {
-        return new EloquentTimerRepository(new Timer());
+        return new EloquentTimerRepository(new Timer(), [
+            Crime::class
+        ]);
     }
 
     private function game()
@@ -74,7 +77,7 @@ class GameTest extends TestCase {
         );
 
         $startedTimer = $game->startTimer(factory(User::class)->create(), Crime::class, 60);
-        $this->assertNull($startedTimer);
+        $this->assertInstanceOf(TimerModelContract::class, $startedTimer);
     }
 
     public function testCrimes()

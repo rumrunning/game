@@ -18,7 +18,7 @@ class ServiceProvider extends BaseServiceProvider {
             $game = new Game(
                 config('app.name'),
                 $app[DiceContract::class],
-                new EloquentTimerRepository(new Timer())
+                new EloquentTimerRepository(new Timer(), config('game.timers'))
             );
 
             $game->setCrimes($this->getCrimes());

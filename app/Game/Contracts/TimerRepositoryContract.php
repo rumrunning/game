@@ -8,5 +8,7 @@ interface TimerRepositoryContract {
 
     public function forPlayer(PlayerContract $player) : TimerRepositoryContract;
 
-    public function setUntil(string $timer, Carbon $carbon) : void;
+    public function setUntil(string $timer, Carbon $carbon) : TimerModelContract;
+
+    public function getTimer(string $timer) : ?TimerModelContract;
 }
