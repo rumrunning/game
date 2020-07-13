@@ -59,7 +59,7 @@ class WaitingForTimerException extends \Exception {
     private function responseMessage()
     {
         $timerDuration = $this->action->getTimerDuration();
-        $actionType = basename($this->action);
+        $actionType = class_basename(get_class($this->action));
 
         return "You must wait $timerDuration seconds between attempting a $actionType";
     }

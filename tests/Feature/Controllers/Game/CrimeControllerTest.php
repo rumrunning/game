@@ -47,6 +47,29 @@ class CrimeControllerTest extends TestCase {
         $response->assertStatus(302);
     }
 
+    public function testWaitingForTimerJsonResponse()
+    {
+        $this->actingAs($this->user)
+            ->post('/crimes/commit', [
+                'code' => 'pickpocket'
+            ])
+        ;
+
+        $response = $this->actingAs($this->user)
+            ->json('POST', '/crimes/commit', [
+                'code' => 'pickpocket'
+            ])
+        ;
+
+        $jsonResponse = $response->json();
+
+        $this->assertArrayHasKey('success', $jsonResponse);
+        $this->assertArrayHasKey('message', $jsonResponse);
+
+        $this->assertNotTrue($jsonResponse['success']);
+        $this->assertStringContainsString('wait', $jsonResponse['message']);
+    }
+
     public function testInvalidCommit()
     {
         $response = $this->actingAs($this->user)
