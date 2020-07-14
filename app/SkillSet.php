@@ -30,8 +30,9 @@ class SkillSet extends Model {
 
     public function increasePoints($points)
     {
-        $this->points += $points;
-
-        $this->save();
+        $this->increment('points', $points);
+        // $this->points += $points;
+        //
+        // $this->save();
     }
 }

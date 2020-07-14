@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Game\ChanceCalculators;
 
+use App\Game\ActionChanceOffsetCalculator;
 use App\Game\ChanceCalculators\PlayerSkillSetChanceCalculator;
 use App\Game\Claim;
 use App\Game\ClaimCollection;
@@ -10,6 +11,8 @@ use App\RumRunning\Rewards\Skill;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery\Mock;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class PlayerSkillSetChanceCalculatorTest extends TestCase {
@@ -36,27 +39,38 @@ class PlayerSkillSetChanceCalculatorTest extends TestCase {
     {
         $this->seed();
 
-        $player = $this->player();
         $crimesCollection = CrimeFactory::createFromArray($this->crimes());
-
-        $calc = new PlayerSkillSetChanceCalculator($player);
-
-        $this->assertSame(0.9, $calc->getActionPercentage($crimesCollection->first()));
-    }
-
-    public function testGetActionPercentageRoundsTo100()
-    {
-        $this->seed();
-        $crimesCollection = CrimeFactory::createFromArray($this->crimes());
-        $claimCollection = new ClaimCollection([new Claim(new Skill(150))]);
+        $claimCollection = new ClaimCollection([new Claim(new Skill(10))]);
 
         $player = $this->player();
         $action = $crimesCollection->first();
         $player->collectClaimsFor($action, $claimCollection);
 
+        $calc = \Mockery::mock(PlayerSkillSetChanceCalculator::class, [$player])->makePartial();
+        $calc->shouldAllowMockingProtectedMethods()
+            ->shouldReceive('getRandomOffsetPercentage')->andReturn(0)
+        ;
 
-        $calc = new PlayerSkillSetChanceCalculator($player);
+        $this->assertSame(1.0, $calc->getActionPercentage($crimesCollection->first()));
+    }
 
-        $this->assertSame(100, $calc->getActionPercentage($action));
+    public function testGetActionPercentageRoundsTo100()
+    {
+        $this->seed();
+
+        $crimesCollection = CrimeFactory::createFromArray($this->crimes());
+        $claimCollection = new ClaimCollection([new Claim(new Skill(1500))]);
+
+        $player = $this->player();
+        $action = $crimesCollection->first();
+        $player->collectClaimsFor($action, $claimCollection);
+
+        $calc = \Mockery::mock(PlayerSkillSetChanceCalculator::class, [$player])->makePartial();
+        $calc->shouldAllowMockingProtectedMethods()
+            ->shouldReceive('getRandomOffsetPercentage')->andReturn(0)
+        ;
+
+
+        $this->assertSame(100.0, $calc->getActionPercentage($action));
     }
 }

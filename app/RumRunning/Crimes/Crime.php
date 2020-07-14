@@ -2,11 +2,13 @@
 
 namespace App\RumRunning\Crimes;
 
+use App\Game\ActionChanceOffsetCalculator;
 use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\ActionPresenterContract;
+use App\Game\Contracts\ActionRandomisesChanceContract;
 use App\Game\Contracts\TimerRestrictedContract;
 
-class Crime implements ActionContract, TimerRestrictedContract {
+class Crime implements ActionContract, TimerRestrictedContract, ActionRandomisesChanceContract {
 
     private $code;
 
@@ -89,5 +91,10 @@ class Crime implements ActionContract, TimerRestrictedContract {
     public function getTimerDuration()
     {
         return 30;
+    }
+
+    public function getChanceOffsetCalculator(): ActionChanceOffsetCalculator
+    {
+        return new ActionChanceOffsetCalculator($this);
     }
 }

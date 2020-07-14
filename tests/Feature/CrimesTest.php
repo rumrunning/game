@@ -39,14 +39,14 @@ class CrimesTest extends TestCase {
             [
                 'code' => 'pickpocket',
                 'description' => 'Pick-pocket someone',
-                'difficulty' => 0,
+                'difficulty' => 0.1,
                 'outcomes' => [
                     'rewards' => [
                         new \App\RumRunning\Rewards\Money(50),
-                        new \App\RumRunning\Rewards\Skill(2),
+                        new \App\RumRunning\Rewards\Skill(30),
                     ],
                     'punishments' => [
-                        new \App\RumRunning\Rewards\Skill(1)
+                        new \App\RumRunning\Rewards\Skill(20)
                     ]
                 ],
             ]

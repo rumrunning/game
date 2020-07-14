@@ -32,7 +32,7 @@ class ActionOutcomeMessage {
 
     private function successMessage() : string
     {
-        return "You successfully attempted to " . $this->action->getDescription();
+        return "You successfully " . $this->action->getDescription();
     }
 
     private  function failureMessage() : string

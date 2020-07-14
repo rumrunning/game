@@ -9,4 +9,6 @@ use App\RumRunning\Crimes\Crime;
 interface PlayerContract extends BasePlayerContract {
 
     public function attemptCrime(Crime $crime) : Outcome;
+
+    public function collectMonies($monies);
 }

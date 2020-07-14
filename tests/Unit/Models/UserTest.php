@@ -73,7 +73,7 @@ class UserTest extends TestCase {
 
         $player = $this->player();
 
-        $this->assertEquals(0.01, $player->getSkillSetPoints(Crime::class));
+        $this->assertEquals(0, $player->getSkillSetPoints(Crime::class));
     }
 
     public function testGetSkillSet()
@@ -122,48 +122,5 @@ class UserTest extends TestCase {
         $crime = $this->game()->crimes()->first();
 
         $this->assertInstanceOf(Outcome::class, $player->attemptCrime($crime));
-    }
-
-    public function testCollectSkillClaimForCrime()
-    {
-        $this->seed();
-        $crimesCollection = CrimeFactory::createFromArray($this->crimes());
-        $claimCollection = new ClaimCollection([new Claim(new Skill(150))]);
-
-        $player = $this->player();
-        $action = $crimesCollection->first();
-        $player->collectClaimsFor($action, $claimCollection);
-
-        $this->assertSame(1.51, $player->getSkillSetPoints(get_class($action)));
-    }
-
-    public function testCollectMoneyClaimForCrime()
-    {
-        $this->seed();
-        $crimesCollection = CrimeFactory::createFromArray($this->crimes());
-        $claimCollection = new ClaimCollection([new Claim(new Money(150))]);
-
-        $player = $this->player();
-        $action = $crimesCollection->first();
-        $player->collectClaimsFor($action, $claimCollection);
-
-        $this->assertSame(150, $player->monies);
-    }
-
-    public function testCollectClaimsForCrime()
-    {
-        $this->seed();
-        $crimesCollection = CrimeFactory::createFromArray($this->crimes());
-        $claimCollection = new ClaimCollection([
-            new Claim(new Skill(150)),
-            new Claim(new Money(1000)),
-        ]);
-
-        $player = $this->player();
-        $action = $crimesCollection->first();
-        $player->collectClaimsFor($action, $claimCollection);
-
-        $this->assertSame(1.51, $player->getSkillSetPoints(get_class($action)));
-        $this->assertSame(1000, $player->monies);
     }
 }

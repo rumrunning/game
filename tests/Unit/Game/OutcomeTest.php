@@ -25,7 +25,7 @@ class OutcomeTest extends TestCase {
     private function punishments()
     {
         return [
-            new Skill(5)
+            new Skill(50)
         ];
     }
 

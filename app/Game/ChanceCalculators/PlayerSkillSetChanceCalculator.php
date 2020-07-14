@@ -26,18 +26,39 @@ class PlayerSkillSetChanceCalculator implements ChanceCalculatorContract {
     {
         $player = $this->player;
 
-        $skill = $player->getSkillSetPoints(get_class($action));
-        $actionChance = 1 - $action->getDifficulty();
+        $skillSet = $player->getSkillSet(get_class($action));
 
+        $playersSkill = $skillSet->points;
+        $actionDifficulty = 1 - $action->getDifficulty();
 
-        $percentage = round($skill * $actionChance * 100, 2);
+        $adjustment = $playersSkill / $actionDifficulty;
+
+        if ($adjustment <= 0) {
+            return 0;
+        }
+
+        $defenceAdjustment = 1 / $adjustment * $adjustment;
+
+        $difficultyScore = $actionDifficulty * $defenceAdjustment;
+        $playersChance = $playersSkill / $difficultyScore;
+        $playersPercentage = round(min([$playersChance, 1]), 2);
+
+        $randomOffsetPercentage = $this->getRandomOffsetPercentage($skillSet);
+
+        $percentage = (1 - $randomOffsetPercentage) * $playersPercentage * 100;
         
         // round down to 100%
-        // @todo Work out how to set a value between 9X% & 100%, without the odds changing on page refresh
         if ($percentage > 100) {
             $percentage = 100;
         }
 
         return $percentage;
+    }
+
+    protected function getRandomOffsetPercentage($skillSet)
+    {
+        $randomOffset = $skillSet->chance_offset;
+
+        return $randomOffset / 100;
     }
 }

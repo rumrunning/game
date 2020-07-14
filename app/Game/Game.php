@@ -76,7 +76,7 @@ abstract class Game implements GameContract {
             $timer = $action->getTimer();
             $isWaiting = $this->waitingForTimer($player, $timer);
 
-            $exception = new WaitingForTimerException("The timer '$timer' is still counting down.");
+            $exception = new WaitingForTimerException();
             $exception->setAction($action);
             $exception->setTimer($timer);
 

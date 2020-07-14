@@ -8,10 +8,10 @@ return [
         'outcomes' => [
             'rewards' => [
                 new \App\RumRunning\Rewards\Money(50, 110),
-                new \App\RumRunning\Rewards\Skill(100, 300),
+                new \App\RumRunning\Rewards\Skill(10, 30),
             ],
             'punishments' => [
-                new \App\RumRunning\Rewards\Skill(100),
+                new \App\RumRunning\Rewards\Skill(10),
             ]
         ],
     ]

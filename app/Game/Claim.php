@@ -2,7 +2,9 @@
 
 namespace App\Game;
 
+use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\CollectableContract;
+use App\Game\Contracts\PlayerContract;
 
 class Claim {
 
@@ -18,7 +20,7 @@ class Claim {
     {
         $this->collectable = $collectable;
 
-        $this->value = $this->collectable->collect();
+        $this->value = $this->collectable->prepareForCollection();
     }
 
     /**

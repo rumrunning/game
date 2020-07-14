@@ -13,7 +13,7 @@ class MoneyTest extends TestCase {
         $skill = new Money(10);
 
         $this->assertInstanceOf(Money::class, $skill);
-        $this->assertSame(10, $skill->collect());
+        $this->assertSame(10, $skill->prepareForCollection());
     }
 
     public function test__constructorOptionalArgs()
@@ -21,7 +21,7 @@ class MoneyTest extends TestCase {
         $skill = new Money(10, 11);
 
         $this->assertInstanceOf(Money::class, $skill);
-        $this->assertContains($skill->collect(), [10, 11]);
+        $this->assertContains($skill->prepareForCollection(), [10, 11]);
     }
 
     public function testCollect()
@@ -33,7 +33,7 @@ class MoneyTest extends TestCase {
             ;
         });
 
-        $collected = $this->app->get(Money::class)->collect();
+        $collected = $this->app->get(Money::class)->prepareForCollection();
 
         $this->assertSame(10, $collected);
     }

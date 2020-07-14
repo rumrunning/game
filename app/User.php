@@ -5,6 +5,7 @@ namespace App;
 use App\Game\ChanceCalculators\PlayerSkillSetChanceCalculator;
 use App\Game\Claim;
 use App\Game\ClaimCollection;
+use App\Game\ClaimsCollector;
 use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\ChanceCalculatorContract;
 use App\RumRunning\Contracts\PlayerContract;
@@ -123,36 +124,18 @@ class User extends Authenticatable implements PlayerContract
         $this->defaultActionChanceCalculator = $defaultActionChanceCalculator;
     }
 
-    public function collectClaimsFor(ActionContract $action, ClaimCollection $claims)
-    {
-        $claims->each(function ($claim) use ($action) {
-            $this->collectClaimFor($action, $claim);
-        });
-    }
-
-    private function collectClaimFor(ActionContract $action, Claim $claim)
-    {
-        switch (get_class($claim->getCollectable())) {
-            case Skill::class:
-                $skillPoints = $claim->getValue();
-
-                $this->collectSkillPointsFor($action, $skillPoints);
-                break;
-            case Money::class:
-                $monies = $claim->getValue();
-
-                $this->collectMoniesFor($action, $monies);
-                break;
-        }
-    }
-
-    private function collectSkillPointsFor(ActionContract $action, $points)
-    {
-        $this->getSkillSet(get_class($action))->increasePoints($points);
-    }
-
-    private function collectMoniesFor(ActionContract $action, $monies)
+    public function collectMonies($monies)
     {
         $this->increment('monies', $monies);
+    }
+
+    public function collectClaimsFor(ActionContract $action, ClaimCollection $claims)
+    {
+        $this->claimsCollector($action, $claims)->collect();
+    }
+
+    private function claimsCollector(ActionContract $action, ClaimCollection $claims)
+    {
+        return new ClaimsCollector($claims, $this, $action);
     }
 }

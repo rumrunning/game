@@ -2,7 +2,10 @@
 
 namespace App\RumRunning\Rewards;
 
+use App\Game\ClaimsCollector;
+use App\Game\Contracts\ActionContract;
 use App\Game\Contracts\ChanceDiscoveryContract;
+use App\Game\Contracts\PlayerContract;
 use App\Game\Traits\Discoverable;
 
 class Money extends RangedReward implements ChanceDiscoveryContract {
@@ -11,7 +14,7 @@ class Money extends RangedReward implements ChanceDiscoveryContract {
 
     private $amount = 0;
 
-    public function collect()
+    public function prepareForCollection()
     {
         $this->setAmount($this->randomReward());
 
@@ -30,5 +33,12 @@ class Money extends RangedReward implements ChanceDiscoveryContract {
     private function setAmount(int $amount): void
     {
         $this->amount = $amount;
+    }
+
+    public function collect($value, ClaimsCollector $claimsCollector)
+    {
+        $player = $claimsCollector->getPlayer();
+
+        $player->collectMonies($value);
     }
 }

@@ -3,16 +3,18 @@
 namespace Tests\Feature\Controllers\Game;
 
 use App\Game\ChanceCalculators\HundredChanceCalculator;
+use App\Game\Exceptions\WaitingForTimerException;
 use App\Http\Controllers\Game\CrimeController;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
 class CrimeControllerTest extends TestCase {
 
-    use DatabaseMigrations, WithoutMiddleware;
+    use DatabaseMigrations, RefreshDatabase, WithoutMiddleware;
 
     private $user;
 
@@ -49,6 +51,8 @@ class CrimeControllerTest extends TestCase {
 
     public function testWaitingForTimerJsonResponse()
     {
+        $this->handleExceptions([WaitingForTimerException::class]);
+
         $this->actingAs($this->user)
             ->post('/crimes/commit', [
                 'code' => 'pickpocket'

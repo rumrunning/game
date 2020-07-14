@@ -10,10 +10,10 @@ class SkillTest extends TestCase {
 
     public function test__constructor()
     {
-        $skill = new Skill(10);
+        $skill = new Skill(100);
 
         $this->assertInstanceOf(Skill::class, $skill);
-        $this->assertSame(0.1, $skill->collect());
+        $this->assertSame(0.1, $skill->prepareForCollection());
     }
 
     public function test__constructorOptionalArgs()
@@ -21,7 +21,7 @@ class SkillTest extends TestCase {
         $skill = new Skill(10, 11);
 
         $this->assertInstanceOf(Skill::class, $skill);
-        $this->assertContains($skill->collect(), [0.1, 0.11]);
+        $this->assertContains($skill->prepareForCollection(), [0.01, 0.011]);
     }
 
     public function testCollect()
@@ -33,8 +33,8 @@ class SkillTest extends TestCase {
             ;
         });
 
-        $collected = $this->app->get(Skill::class)->collect();
+        $collected = $this->app->get(Skill::class)->prepareForCollection();
 
-        $this->assertSame(0.1, $collected);
+        $this->assertSame(0.01, $collected);
     }
 }
