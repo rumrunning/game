@@ -29,7 +29,7 @@ class PlayerSkillSetChanceCalculator implements ChanceCalculatorContract {
         $skillSet = $player->getSkillSet(get_class($action));
 
         $playersSkill = $skillSet->points;
-        $actionDifficulty = 1 - $action->getDifficulty();
+        $actionDifficulty = $action->getDifficulty();
 
         $adjustment = $playersSkill / $actionDifficulty;
 
