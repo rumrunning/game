@@ -34,7 +34,7 @@ return [
         [
             'code' => 'store',
             'description' => 'Steal from a store',
-            'difficulty' => 0.25,
+            'difficulty' => 0.2,
             'outcomes' => [
                 'rewards' => [
                     // There is a 100% chance of getting money when rewards are collected
