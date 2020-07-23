@@ -15,7 +15,7 @@ return [
         [
             'code' => 'pickpocket',
             'description' => 'Pick-pocket someone',
-            'difficulty' => 0.1,
+            'difficulty' => 0.15,
             'outcomes' => [
                 'rewards' => [
                     // There is a 100% chance of getting money when rewards are collected
@@ -34,7 +34,7 @@ return [
         [
             'code' => 'store',
             'description' => 'Steal from a store',
-            'difficulty' => 0.25,
+            'difficulty' => 0.325,
             'outcomes' => [
                 'rewards' => [
                     // There is a 100% chance of getting money when rewards are collected
