@@ -27,7 +27,7 @@ return [
                     // (new \App\RumRunning\Rewards\Bullet(1, 15))->setDiscoveryChance(0.1)
                 ],
                 'punishments' => [
-                    new \App\RumRunning\Rewards\Skill(1, 7)
+                    new \App\RumRunning\Rewards\Skill(5, 10)
                 ]
             ],
         ],
@@ -42,7 +42,7 @@ return [
                     new \App\RumRunning\Rewards\Skill(9, 17),
                 ],
                 'punishments' => [
-                    new \App\RumRunning\Rewards\Skill(2, 7)
+                    new \App\RumRunning\Rewards\Skill(7, 10)
                 ]
             ],
         ]
