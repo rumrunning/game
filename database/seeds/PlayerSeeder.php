@@ -13,6 +13,11 @@ class PlayerSeeder extends Seeder {
             'password' => \Illuminate\Support\Facades\Hash::make('password'),
         ]);
 
+        $user->tokens->create([
+            'name' => 'Test token',
+
+        ]);
+
         foreach (config('game.actions.skilled') as $skilledAction) {
             \App\SkillSet::updateOrCreate([
                 'user_id' => $user->getKey(),

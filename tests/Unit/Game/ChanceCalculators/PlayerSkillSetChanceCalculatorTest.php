@@ -40,7 +40,7 @@ class PlayerSkillSetChanceCalculatorTest extends TestCase {
         $this->seed();
 
         $crimesCollection = CrimeFactory::createFromArray($this->crimes());
-        $claimCollection = new ClaimCollection([new Claim(new Skill(10))]);
+        $claimCollection = new ClaimCollection([new Claim(new Skill(100))]);
 
         $player = $this->player();
         $action = $crimesCollection->first();
@@ -51,7 +51,7 @@ class PlayerSkillSetChanceCalculatorTest extends TestCase {
             ->shouldReceive('getRandomOffsetPercentage')->andReturn(0)
         ;
 
-        $this->assertSame(1.0, $calc->getActionPercentage($crimesCollection->first()));
+        $this->assertSame(100.0, $calc->getActionPercentage($crimesCollection->first()));
     }
 
     public function testGetActionPercentageRoundsTo100()
