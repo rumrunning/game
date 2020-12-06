@@ -67,7 +67,7 @@ class SkillSetTest extends TestCase {
             'points' => 0.02
         ]);
 
-        $this->assertSame(20.0, data_get($skillSet->getAttributes(), 'points', null));
+        $this->assertSame(20, data_get($skillSet->getAttributes(), 'points', null));
     }
 
     public function testIncreasePoints()
@@ -82,6 +82,6 @@ class SkillSetTest extends TestCase {
         $skillSet->player()->associate($player)->save();
         $skillSet->increasePoints(50);
 
-        $this->assertSame(51, $skillSet->points);
+        $this->assertSame(51.0, $skillSet->points);
     }
 }

@@ -26,10 +26,11 @@ class ActionChanceOffsetCalculator {
         $playerSkill = $player->getSkillSetPoints(get_class($this->action));
         $actionDifficulty = $this->action->getDifficulty();
 
-        $adjustment = $playerSkill / $actionDifficulty;
+        $adjustment = (float) bcdiv($playerSkill, $actionDifficulty, 2);
 
-        $offsetScore = 55 - $adjustment * 50;
-        $offsetScoreAdjusted = max([$offsetScore, 5]);
+        $offsetScore = bcmul($adjustment, 50, 2);
+        $offsetScore = bcsub(55, $offsetScore, 2);
+        $offsetScoreAdjusted = round(max([$offsetScore, 5]), 2);
 
         return random_int(0, $offsetScoreAdjusted);
     }

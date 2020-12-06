@@ -22,7 +22,11 @@ class PlayerSkillSetChanceCalculator implements ChanceCalculatorContract {
         $this->player = $player;
     }
 
-    public function getActionPercentage(ActionContract $action)
+    /**
+     * @param ActionContract $action
+     * @return float
+     */
+    public function getActionPercentage(ActionContract $action) : float
     {
         $player = $this->player;
 
@@ -31,26 +35,11 @@ class PlayerSkillSetChanceCalculator implements ChanceCalculatorContract {
         $playersSkill = $skillSet->points;
         $actionDifficulty = $action->getDifficulty();
 
-        $adjustment = $playersSkill / $actionDifficulty;
-
-        if ($adjustment <= 0) {
-            return 0;
-        }
-
-        $defenceAdjustment = 1 / ($adjustment * $adjustment);
-
-        $difficultyScore = $actionDifficulty * $defenceAdjustment;
-        $playersChance = $playersSkill / $difficultyScore;
-        $playersPercentage = round(min([$playersChance, 1]), 2);
+        $playersPercentage = $this->calculatePlayersPercentage($playersSkill, $actionDifficulty);
 
         $randomOffsetPercentage = $this->getRandomOffsetPercentage($skillSet);
 
-        $percentage = (1 - $randomOffsetPercentage) * $playersPercentage * 100;
-        
-        // round down to 100%
-        if ($percentage > 100) {
-            $percentage = 100;
-        }
+        $percentage = $this->calculateFinalPercentage($randomOffsetPercentage, $playersPercentage);
 
         return $percentage;
     }
@@ -59,6 +48,36 @@ class PlayerSkillSetChanceCalculator implements ChanceCalculatorContract {
     {
         $randomOffset = $skillSet->chance_offset;
 
-        return $randomOffset / 100;
+        return bcdiv($randomOffset, 100, 2);
+    }
+
+    protected function calculateFinalPercentage($randomOffsetPercentage, $playersPercentage)
+    {
+        $percentage = bcsub(1, $randomOffsetPercentage, 8);
+        $percentage = bcmul($percentage, $playersPercentage, 8);
+        $percentage = bcmul($percentage, 100, 8);
+
+        if ($percentage >= 100) {
+            $percentage = 100;
+        }
+
+        return (float) $percentage;
+    }
+
+    protected function calculatePlayersPercentage($playersSkill, $actionDifficulty)
+    {
+        $adjustment = (float) bcdiv($playersSkill, $actionDifficulty, 8);
+
+        if ($adjustment <= 0) {
+            return 0;
+        }
+
+        $adjustment = (float) bcmul($adjustment, $adjustment, 32);
+        $defenceAdjustment = (float) bcdiv(1, $adjustment, 32);
+
+        $difficultyScore = (float) bcmul($actionDifficulty, $defenceAdjustment, 32);
+        $playersChance = (float) bcdiv($playersSkill, $difficultyScore, 32);
+
+        return min([$playersChance, 1]);
     }
 }

@@ -51,7 +51,7 @@ class PlayerSkillSetChanceCalculatorTest extends TestCase {
             ->shouldReceive('getRandomOffsetPercentage')->andReturn(0)
         ;
 
-        $this->assertSame(1.0, $calc->getActionPercentage($crimesCollection->first()));
+        $this->assertSame(0.1, $calc->getActionPercentage($crimesCollection->first()));
     }
 
     public function testGetActionPercentageRoundsTo100()

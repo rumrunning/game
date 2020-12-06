@@ -15,24 +15,21 @@ class SkillSet extends Model {
 
     public function scopeGetSkillSet($query, $class)
     {
-        return $query->where('class', $class);
+        $query->where('class', $class);
     }
 
-    public function getPointsAttribute()
+    public function getPointsAttribute($value)
     {
-        return $this->attributes['points'] / 1000;
+        return (float) bcdiv($value, 1000, 2);
     }
 
     public function setPointsAttribute($value)
     {
-        return $this->attributes['points'] = $value * 1000;
+        $this->attributes['points'] = (int) bcmul($value, 1000);
     }
 
     public function increasePoints($points)
     {
         $this->increment('points', $points);
-        // $this->points += $points;
-        //
-        // $this->save();
     }
 }
