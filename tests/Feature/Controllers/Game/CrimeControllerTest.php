@@ -6,7 +6,6 @@ use App\Game\ChanceCalculators\HundredChanceCalculator;
 use App\Game\Exceptions\WaitingForTimerException;
 use App\Http\Controllers\Game\CrimeController;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Mockery\MockInterface;
@@ -14,7 +13,7 @@ use Tests\TestCase;
 
 class CrimeControllerTest extends TestCase {
 
-    use DatabaseMigrations, RefreshDatabase, WithoutMiddleware;
+    use RefreshDatabase, WithoutMiddleware;
 
     private $user;
 

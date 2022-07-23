@@ -10,14 +10,13 @@ use App\RumRunning\Contracts\GameContract;
 use App\RumRunning\Contracts\PlayerContract;
 use App\RumRunning\Crimes\CrimeFactory;
 use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class CrimesTest extends TestCase {
 
-    use DatabaseMigrations, RefreshDatabase, InteractsWithGame;
+    use RefreshDatabase, InteractsWithGame;
 
     /**
      * @var GameContract
